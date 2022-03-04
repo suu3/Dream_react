@@ -11,12 +11,14 @@ class App extends Component {
       { id: 3, name: "Coding", count: 0 },
     ],
   };
+
   handleIncrement = (habit) => {
     const habits = [...this.state.habits];
     const index = habits.indexOf(habit);
     habits[index].count++;
     this.setState({ habits });
   };
+
   handleDecrement = (habit) => {
     const habits = [...this.state.habits];
     const index = habits.indexOf(habit);
@@ -24,10 +26,17 @@ class App extends Component {
     habits[index].count = count < 0 ? 0 : count;
     this.setState({ habits });
   };
+
   handleDelete = (habit) => {
     const habits = this.state.habits.filter((item) => item.id !== habit.id);
     this.setState({ habits });
   };
+
+  handleAdd = (name) => {
+    const habits = [...this.state.habits, { id: Date.now(), name, count: 0 }];
+    this.setState({ habits });
+  };
+
   render() {
     return (
       <>
@@ -39,6 +48,7 @@ class App extends Component {
           onIncrement={this.handleIncrement}
           onDecrement={this.handleDecrement}
           onDelete={this.handleDelete}
+          onAdd={this.handleAdd}
         />
       </>
     );
