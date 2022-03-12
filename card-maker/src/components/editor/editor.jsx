@@ -5,7 +5,7 @@ import styles from "./editor.module.css";
 const Editor = ({ cards }) => {
   return (
     <section className={styles.editor}>
-      <h1>Card Maker</h1>
+      <h1 className={styles.title}>Card Maker</h1>
       {cards.map((card) => (
         <CardEditForm card={card} />
       ))}
