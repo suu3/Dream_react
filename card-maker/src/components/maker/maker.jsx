@@ -6,42 +6,11 @@ import { useHistory } from "react-router-dom";
 import Preview from "../preview/preview";
 import Editor from "../editor/editor";
 
-const Maker = ({ authService, FileInput }) => {
-  const [cards, setCards] = useState({
-    1: {
-      id: "1",
-      name: "Ellie",
-      company: "Samsung",
-      theme: "dark",
-      title: "Sftware Engineer",
-      email: "ellie@gmail.com",
-      message: "아무말",
-      fileName: "ellie",
-      fileURL: null,
-    },
-    2: {
-      id: "2",
-      name: "Ellie",
-      company: "Samsung",
-      theme: "light",
-      title: "Sftware Engineer",
-      email: "ellie@gmail.com",
-      message: "아무말",
-      fileName: "ellie",
-      fileURL: null,
-    },
-    3: {
-      id: "3",
-      name: "Ellie",
-      company: "Samsung",
-      theme: "colorful",
-      title: "Sftware Engineer",
-      email: "ellie@gmail.com",
-      message: "아무말",
-      fileName: "ellie",
-      fileURL: null,
-    },
-  });
+const Maker = ({ cardRepository, authService, FileInput }) => {
+  const historyState = useHistory().state;
+  const [cards, setCards] = useState({});
+  const [userId, setUserId] = useState(historyState && historyState.id);
+
   const history = useHistory();
   const onLogout = () => {
     authService.logout();
@@ -49,7 +18,10 @@ const Maker = ({ authService, FileInput }) => {
 
   useEffect(() => {
     authService.onAuthChange((user) => {
-      if (!user) {
+      if (user) {
+        setUserId(user.uid);
+      } else {
+        //사용자가 없다면
         history.push("/"); // 홈으로
       }
     });
@@ -61,6 +33,7 @@ const Maker = ({ authService, FileInput }) => {
       updated[card.id] = card;
       return updated;
     });
+    cardRepository.saveCard(userId, card);
   };
 
   const deleteCard = (card) => {
@@ -69,6 +42,7 @@ const Maker = ({ authService, FileInput }) => {
       delete updated[card.id];
       return updated;
     });
+    cardRepository.removeCard(userId, card);
   };
 
   return (
