@@ -1,19 +1,24 @@
-import firebaseApp from './firebase';
+import { getDatabase, ref, onValue, set, remove} from "firebase/database";
 
 class CardRepository {
     syncCards(userId, onUpdate){
-        const ref = firebaseApp.database().ref(`${userId}/cards`);
-        ref.on('value', snapshot =>{ //값이 변경될때마다 알고 싶다.
+        const database = getDatabase();
+        const syncRef = ref(database, `${userId}/cards`);
+        onValue(syncRef, (snapshot) => {
             const value = snapshot.val();
             value && onUpdate(value);
         });
-        return () => ref.off();
+        return () => syncRef.off();
     };
     saveCard(userId, card) {
-        firebaseApp.database().ref(`${userId}/cards/${card.id}`).set(card);
+        const database = getDatabase();
+        set(ref(database, `${userId}/cards/${card.id}`), {
+            ...card,
+        });
     }
     removeCard(userId, card){
-        firebaseApp.database().ref(`${userId}/cards/${card.id}`).remove();
+        const database = getDatabase();
+        remove(ref(database, `${userId}/cards/${card.id}`));
     }
 }
 
