@@ -17,6 +17,19 @@ const Maker = ({ cardRepository, authService, FileInput }) => {
   };
 
   useEffect(() => {
+    //사용자가 바뀌면
+    if (!userId) {
+      // 로그인 X
+      return;
+    }
+    const stopSync = cardRepository.syncCards(userId, (cards) => {
+      //함수를 인자로 전달
+      setCards(cards);
+    });
+    return () => stopSync(); //불필요한 네트워크 사용 멈춤
+  }, [userId]);
+
+  useEffect(() => {
     authService.onAuthChange((user) => {
       if (user) {
         setUserId(user.uid);
