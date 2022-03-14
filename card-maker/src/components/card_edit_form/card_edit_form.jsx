@@ -15,10 +15,17 @@ const CardEditForm = ({ FileInput, card, updateCard, deleteCard }) => {
     event.preventDefault();
     updateCard({
       ...card,
-      [event.currentTarget.name]: event.currentTarget.value,
+      [event.currentTarget.name]: event.currentTarget.defaultValue,
     });
   };
-
+  const onFileChange = (file) => {
+    updateCard({
+      ...card,
+      fileName: file.name,
+      fileURL: file.url,
+    });
+    console.log(file.url);
+  };
   return (
     <form className={styles.form}>
       <input
@@ -26,46 +33,46 @@ const CardEditForm = ({ FileInput, card, updateCard, deleteCard }) => {
         className={styles.input}
         type="text"
         name="name"
-        value={name}
+        defaultValue={name}
       />
       <input
         className={styles.input}
         type="text"
         name="company"
-        value={company}
+        defaultValue={company}
       />
       <select
         onChange={onChange}
         className={styles.select}
         name="theme"
-        value={theme}
+        defaultValue={theme}
       >
-        <option value="light">light</option>
-        <option value="dark">dark</option>
-        <option value="colorful">colorful</option>
+        <option defaultValue="light">light</option>
+        <option defaultValue="dark">dark</option>
+        <option defaultValue="colorful">colorful</option>
       </select>
       <input
         onChange={onChange}
         className={styles.input}
         type="text"
         name="title"
-        value={title}
+        defaultValue={title}
       />
       <input
         onChange={onChange}
         className={styles.input}
         type="text"
         name="email"
-        value={email}
+        defaultValue={email}
       />
       <textarea
         onChange={onChange}
         className={styles.textarea}
         name="message"
-        value={message}
+        defaultValue={message}
       ></textarea>
       <div className={styles.fileInput}>
-        <FileInput />
+        <FileInput name={fileName} onFileChange={onFileChange} />
       </div>
       <Button name="Delete" onClick={onSubmit} />
     </form>
