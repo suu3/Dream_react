@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styles from "./maker.module.css";
 import Header from "../header/header";
 import Footer from "../footer/footer";
@@ -12,9 +12,9 @@ const Maker = ({ cardRepository, authService, FileInput }) => {
   const [userId, setUserId] = useState(historyState && historyState.id);
 
   const history = useHistory();
-  const onLogout = () => {
+  const onLogout = useCallback(() => {
     authService.logout();
-  };
+  });
 
   useEffect(() => {
     //사용자가 바뀌면
