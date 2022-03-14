@@ -1,4 +1,5 @@
 import { getDatabase, ref, onValue, set, remove} from "firebase/database";
+import firebase from 'firebase/compat/app';
 
 class CardRepository {
     syncCards(userId, onUpdate){

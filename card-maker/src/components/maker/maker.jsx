@@ -27,7 +27,7 @@ const Maker = ({ cardRepository, authService, FileInput }) => {
       setCards(cards);
     });
     return () => stopSync(); //불필요한 네트워크 사용 멈춤
-  }, [userId]);
+  }, [userId, cardRepository]);
 
   useEffect(() => {
     authService.onAuthChange((user) => {
@@ -38,7 +38,7 @@ const Maker = ({ cardRepository, authService, FileInput }) => {
         history.push("/"); // 홈으로
       }
     });
-  });
+  }, [userId, history, authService]);
 
   const createOrUpdateCard = (card) => {
     setCards((cards) => {
